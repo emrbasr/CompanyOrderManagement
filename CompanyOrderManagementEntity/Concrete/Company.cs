@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace CompanyOrderManagement.Entities.Concrete
 {
-    public enum ApprovalStatus
-    {
-        Active = 1,
-        Passive = 2
-      
-    }
+    
     public class Company:BaseEntity
     {
-        public int CompanyId { get; set; }
-        public string CompanyName { get; set; }
-        public ApprovalStatus ApprovalStatus { get; set;}=ApprovalStatus.Active;
-        public DateTime? OrderStartTiime { get; set; }
-        public DateTime? OrderEndTiime { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsApproved { get; set; }
+        public TimeSpan OrderStartTime { get; set; }
+        public TimeSpan OrderEndTime { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
     }
 }

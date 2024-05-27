@@ -14,6 +14,6 @@ namespace CompanyOrderManagement.DAL.Abstract
         void Update(T entity);
         List<T> GetList();
         T GetById(int id);
-        List<T> GetListByFilter(Expression<Func<T, bool>> filter = null);
+        
     }
 }

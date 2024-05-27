@@ -2,6 +2,7 @@
 using CompanyOrderManagement.BL.Constans;
 using CompanyOrderManagement.DAL.Context;
 using CompanyOrderManagement.Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +19,23 @@ namespace CompanyOrderManagement.BL.Concrete
         {
             _dbContext = dbContext;
         }
-        public async virtual Task<string> CreateAsync(Order entity)
+
+        public async Task AddAsync(Order order)
         {
-            Company company = new Company();
-            if (company.ApprovalStatus==ApprovalStatus.Active)
-            {
-                if (DateTime.Now.Hour == 22)
-                {
-                    return (Messages.MaintenanceTime);
-                }
-                await Repository.CreateAsync(entity);
-                return ( Messages.ProductAdded);
-            }
-            return null;
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        
+
+        public async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            return await _dbContext.Orders.ToListAsync();
+        }
+
+        public async Task<Order> GetByIdAsync(int id)
+        {
+            return await _dbContext.Orders.FindAsync(id);
         }
     }
 }

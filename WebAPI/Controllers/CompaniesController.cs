@@ -58,18 +58,21 @@ namespace WebAPI.Controllers
             return (int)HttpStatusCode.OK;
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put(Company company) // Update-Put
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Company company) // Update-Put
         {
-            var sonuc = await _companyService.UpdateAsync(company);
-            if (sonuc > 0)
+            if (id != company.Id)
             {
-                return Ok();
+                return BadRequest();
             }
-            else
+
+            var result = await _companyService.UpdateAsync(company);
+            if (result > 0)
             {
-                return BadRequest(sonuc);
+                return NoContent();
             }
+
+            return BadRequest();
         }
 
         [HttpDelete]

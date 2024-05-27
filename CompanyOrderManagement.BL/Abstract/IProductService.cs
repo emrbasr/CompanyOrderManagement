@@ -9,5 +9,8 @@ namespace CompanyOrderManagement.BL.Abstract
 {
     public interface IProductService:IGenericService<Product>
     {
+        Task<Product> GetByIdAsync(int id);
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task AddAsync(Product product);
     }
 }

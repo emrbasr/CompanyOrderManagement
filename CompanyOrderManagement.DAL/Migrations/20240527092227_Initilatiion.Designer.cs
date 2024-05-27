@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanyOrderManagement.DAL.Migrations
 {
     [DbContext(typeof(SqlDbContext))]
-    [Migration("20240524160002_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240527092227_Initilatiion")]
+    partial class Initilatiion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,25 +26,24 @@ namespace CompanyOrderManagement.DAL.Migrations
 
             modelBuilder.Entity("CompanyOrderManagement.Entities.Concrete.Company", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ApprovalStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CompanyName")
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("OrderEndTiime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("OrderEndTime")
+                        .HasColumnType("time");
 
-                    b.Property<DateTime?>("OrderStartTiime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("OrderStartTime")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
@@ -53,36 +52,45 @@ namespace CompanyOrderManagement.DAL.Migrations
 
             modelBuilder.Entity("CompanyOrderManagement.Entities.Concrete.Order", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PersonName")
+                    b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CompanyOrderManagement.Entities.Concrete.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -99,7 +107,32 @@ namespace CompanyOrderManagement.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("CompanyOrderManagement.Entities.Concrete.Order", b =>
+                {
+                    b.HasOne("CompanyOrderManagement.Entities.Concrete.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("CompanyOrderManagement.Entities.Concrete.Product", b =>
+                {
+                    b.HasOne("CompanyOrderManagement.Entities.Concrete.Company", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CompanyId");
+                });
+
+            modelBuilder.Entity("CompanyOrderManagement.Entities.Concrete.Company", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

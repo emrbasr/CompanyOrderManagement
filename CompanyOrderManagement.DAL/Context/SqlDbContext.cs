@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,13 +20,18 @@ namespace CompanyOrderManagement.DAL.Context
         }
         public SqlDbContext(DbContextOptions<SqlDbContext> options) : base(options)
         {
+            
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Sql server veritabanı bağlantısı
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=CompanyDb;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=CompaniesOrdersDb;Trusted_Connection=true");
         }
     }
 } 

@@ -12,7 +12,7 @@ namespace CompanyOrderManagement.BL.Validations
     {
         public CompanyValidation()
         {
-            RuleFor(x=>x.CompanyName).NotEmpty();
+            RuleFor(x=>x.Name).NotEmpty();
             
         }
     }

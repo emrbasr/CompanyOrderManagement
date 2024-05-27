@@ -12,7 +12,7 @@ namespace CompanyOrderManagement.BL.Validations
     {
         public OrderValidation()
         {
-            RuleFor(x => x.PersonName).NotEmpty().WithMessage("Lütfen isim giriniz");
+            RuleFor(x => x.CustomerName).NotEmpty().WithMessage("Lütfen isim giriniz");
            
         }
     }

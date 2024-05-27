@@ -9,5 +9,9 @@ namespace CompanyOrderManagement.BL.Abstract
 {
     public interface IOrderService:IGenericService<Order>
     {
+        Task AddAsync(Order order);
+        Task<IEnumerable<Order>> GetAllAsync();
+        Task<Order> GetByIdAsync(int id);
     }
 }
+

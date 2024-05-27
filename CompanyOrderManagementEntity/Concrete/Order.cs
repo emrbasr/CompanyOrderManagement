@@ -9,10 +9,12 @@ namespace CompanyOrderManagement.Entities.Concrete
 {
     public class Order:BaseEntity
     {
-        public int OrderId { get; set; }
-        public int CompanyId { get; set; }
+        public int Id { get; set; }
         public int ProductId { get; set; }
-        public string PersonName { get; set; }
+        public int CompanyId { get; set; }
+        public string CustomerName { get; set; }
         public DateTime OrderDate { get; set; }
+        public int Quantity { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

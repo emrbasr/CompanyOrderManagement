@@ -24,11 +24,7 @@ namespace CompanyOrderManagement.DAL.Repository
             throw new NotImplementedException();
         }
 
-        public List<T> GetListByFilter(Expression<Func<T, bool>> filter = null)
-        {
-            using var c = new SqlDbContext();
-            return c.Set<T>().Where(filter).ToList();
-        }
+        
 
         public T GetById(int id)
         {
